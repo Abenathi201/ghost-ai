@@ -167,12 +167,11 @@ export default function SignUpPage() {
     const phoneNumber = formData.get('phoneNumber') as string
 
     // For email OTP: change create({ phoneNumber }) to create({ emailAddress })
-    const error = await signUp.create({ phoneNumber })
+    const { error } = await signUp.create({ phoneNumber })
 
     // For email OTP: change sendPhoneCode() to sendEmailCode()
     if (!error) await signUp.verifications.sendPhoneCode()
   }
-
   const handleVerify = async (formData: FormData) => {
     const code = formData.get('code') as string
 
@@ -206,9 +205,8 @@ export default function SignUpPage() {
 
   if (
     signUp.status === 'missing_requirements' &&
-    // For email OTP: check for phone_number instead of email_address
-    signUp.unverifiedFields.includes('phone_number') &&
-    signUp.missingFields.length === 0
+    // For email OTP: check for email_address instead of phone_number
+    signUp.unverifiedFields.includes('phone_number') &&    signUp.missingFields.length === 0
   ) {
     return (
       <>
